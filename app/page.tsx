@@ -1,0 +1,38 @@
+"use client"
+
+import Link from "next/link"
+import { ArrowRight, BookOpen, CalendarDays, CheckCircle2, ChevronRight, GraduationCap, Menu, MessageCircle, PlayCircle, Users } from "lucide-react"
+import Navigation from "@/components/navigation"
+import Footer from "@/components/footer"
+
+import { globalAcademyLogo as logo } from "@/components/site-brand"
+
+export default function HomePage() {
+  return (
+    <div className="min-h-screen bg-background">
+      <Navigation />
+      <main>
+        <section className="hero-shell relative overflow-hidden">
+          <div className="hero-grid" />
+          <div className="container relative mx-auto grid items-center gap-12 px-6 py-20 md:py-28 lg:grid-cols-[1.05fr_.95fr] lg:px-10 lg:py-32">
+            <div className="max-w-2xl">
+              <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-gold/35 bg-gold/10 px-4 py-2 text-sm font-semibold text-gold-light"><span className="h-2 w-2 rounded-full bg-gold" /> Une éducation tournée vers l&apos;avenir</div>
+              <h1 className="max-w-3xl text-balance font-serif text-5xl font-bold leading-[1.04] text-white md:text-7xl">Construire les leaders <span className="text-gold">de demain.</span></h1>
+              <p className="mt-7 max-w-xl text-pretty text-lg leading-8 text-white/75 md:text-xl">À Global Academy, nous révélons le potentiel de chaque apprenant grâce à une éducation exigeante, humaine et ouverte sur le monde.</p>
+              <div className="mt-9 flex flex-col gap-3 sm:flex-row"><Link href="/register" className="inline-flex items-center justify-center gap-2 rounded-md bg-gold px-6 py-3.5 font-bold text-forest transition hover:bg-gold-light">Demander des informations <ArrowRight className="h-4 w-4" /></Link><Link href="/about" className="inline-flex items-center justify-center gap-2 rounded-md border border-white/30 px-6 py-3.5 font-bold text-white transition hover:bg-white/10"><PlayCircle className="h-5 w-5" /> Découvrir Global Academy</Link></div>
+              <div className="mt-12 flex flex-wrap gap-x-8 gap-y-3 text-sm text-white/65"><span className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-gold" /> Excellence académique</span><span className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-gold" /> Accompagnement personnalisé</span></div>
+            </div>
+            <div className="relative mx-auto w-full max-w-lg lg:ml-auto"><div className="absolute -inset-5 rounded-[2rem] border border-gold/25" /><div className="relative overflow-hidden rounded-2xl bg-white p-3 shadow-2xl"><div className="flex aspect-[4/5] items-center justify-center overflow-hidden rounded-xl bg-cream"><img src={logo} alt="Logo Global Academy" className="w-4/5 object-contain mix-blend-multiply" /></div><div className="flex items-center justify-between px-3 py-4"><div><p className="font-serif text-lg font-bold text-forest">Global Academy</p><p className="text-sm text-muted-foreground">Former pour transformer</p></div><div className="rounded-full bg-forest p-3 text-gold"><GraduationCap className="h-5 w-5" /></div></div></div></div>
+          </div>
+        </section>
+
+        <section className="border-b border-border bg-white"><div className="container mx-auto grid gap-8 px-6 py-9 sm:grid-cols-3 lg:px-10"><div className="flex gap-4"><div className="rounded-lg bg-forest/10 p-3 text-forest"><GraduationCap /></div><div><p className="font-bold text-forest">Une vision globale</p><p className="mt-1 text-sm text-muted-foreground">Des compétences pour le monde de demain.</p></div></div><div className="flex gap-4"><div className="rounded-lg bg-gold/20 p-3 text-forest"><Users /></div><div><p className="font-bold text-forest">Une communauté engagée</p><p className="mt-1 text-sm text-muted-foreground">Des partenaires et familles au cœur du projet.</p></div></div><div className="flex gap-4"><div className="rounded-lg bg-forest/10 p-3 text-forest"><BookOpen /></div><div><p className="font-bold text-forest">Un apprentissage vivant</p><p className="mt-1 text-sm text-muted-foreground">Apprendre, créer, collaborer et grandir.</p></div></div></div></section>
+
+        <section className="container mx-auto px-6 py-20 lg:px-10"><div className="grid items-end gap-8 md:grid-cols-2"><div><p className="eyebrow">Notre accompagnement</p><h2 className="mt-3 max-w-xl font-serif text-4xl font-bold text-forest md:text-5xl">Une formation qui donne du sens.</h2></div><p className="max-w-md text-lg leading-8 text-muted-foreground md:justify-self-end">Nous préparons chaque apprenant à réussir dans un environnement en constante évolution, avec confiance, curiosité et responsabilité.</p></div><div className="mt-12 grid gap-5 md:grid-cols-3"><Link href="/programs" className="group rounded-xl border border-border bg-white p-7 transition hover:-translate-y-1 hover:border-gold hover:shadow-lg"><span className="text-sm font-bold uppercase tracking-widest text-gold-dark">01</span><h3 className="mt-8 font-serif text-2xl font-bold text-forest">Nos programmes</h3><p className="mt-3 leading-7 text-muted-foreground">Des parcours adaptés aux différents âges et objectifs.</p><span className="mt-8 inline-flex items-center gap-2 font-semibold text-forest">Explorer <ChevronRight className="h-4 w-4 transition group-hover:translate-x-1" /></span></Link><Link href="/events" className="group rounded-xl border border-border bg-forest p-7 text-white transition hover:-translate-y-1 hover:shadow-lg"><span className="text-sm font-bold uppercase tracking-widest text-gold">02</span><h3 className="mt-8 font-serif text-2xl font-bold">Vie et événements</h3><p className="mt-3 leading-7 text-white/70">Des expériences qui prolongent l&apos;apprentissage au-delà de la salle de classe.</p><span className="mt-8 inline-flex items-center gap-2 font-semibold text-gold">Voir le calendrier <ChevronRight className="h-4 w-4 transition group-hover:translate-x-1" /></span></Link><Link href="/partners" className="group rounded-xl border border-border bg-cream p-7 transition hover:-translate-y-1 hover:border-gold hover:shadow-lg"><span className="text-sm font-bold uppercase tracking-widest text-gold-dark">03</span><h3 className="mt-8 font-serif text-2xl font-bold text-forest">Nos partenaires</h3><p className="mt-3 leading-7 text-muted-foreground">Un réseau qui enrichit les opportunités de notre communauté.</p><span className="mt-8 inline-flex items-center gap-2 font-semibold text-forest">En savoir plus <ChevronRight className="h-4 w-4 transition group-hover:translate-x-1" /></span></Link></div></section>
+
+        <section className="bg-cream"><div className="container mx-auto grid gap-10 px-6 py-20 md:grid-cols-[.8fr_1.2fr] md:items-center lg:px-10"><div><p className="eyebrow">Restez informé</p><h2 className="mt-3 font-serif text-4xl font-bold text-forest">Votre projet commence par une conversation.</h2></div><form className="grid gap-3 rounded-xl bg-white p-6 shadow-sm sm:grid-cols-[1fr_auto]"><label className="sr-only" htmlFor="home-email">Votre adresse email</label><input id="home-email" type="email" required placeholder="Votre adresse email" className="h-12 rounded-md border border-border px-4 outline-none focus:border-forest focus:ring-2 focus:ring-forest/20" /><button className="h-12 rounded-md bg-forest px-6 font-bold text-white transition hover:bg-forest-light">Recevoir les informations</button><p className="text-sm text-muted-foreground sm:col-span-2">Inscrivez-vous pour recevoir les actualités et informations de Global Academy.</p></form></div></section>
+      </main><Footer />
+    </div>
+  )
+}
+
