@@ -1,0 +1,5 @@
+import Link from "next/link"
+import Navigation from "@/components/navigation"
+import Footer from "@/components/footer"
+
+export default function SignupPage() { return <div className="min-h-screen bg-background"><Navigation /><main className="container mx-auto grid min-h-[70vh] max-w-xl place-items-center px-6 py-16 lg:px-10"><section className="w-full rounded-xl border border-border bg-white p-6 text-center shadow-sm md:p-10"><p className="eyebrow">Création de compte</p><h1 className="mt-3 font-serif text-4xl font-bold text-forest">Inscription sur invitation</h1><p className="mt-4 leading-7 text-muted-foreground">Pour garantir un accompagnement de qualité, chaque inscription est précédée d’une revue de candidature. Nous vous inviterons à créer votre compte après validation.</p><Link href="/register" className="mt-8 inline-flex rounded-md bg-gold px-5 py-3 font-bold text-forest hover:bg-gold-light">Commencer ma candidature</Link><p className="mt-6 text-sm text-muted-foreground">Déjà invité ? <Link href="/login" className="font-bold text-gold-dark hover:underline">Retourner à la connexion</Link></p></section></main><Footer /></div> }
