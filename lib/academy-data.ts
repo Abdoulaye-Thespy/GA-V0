@@ -1,13 +1,15 @@
 export const academyPrograms = [
-  { title: "Développeur d’Application (AWS)", price: "250 000 CFA", mode: "Présentiel, live ou à la demande" },
-  { title: "Développeur Web", price: "250 000 CFA", mode: "Présentiel, live ou à la demande" },
-  { title: "Graphiste de production", price: "225 000 CFA", mode: "Présentiel, live ou à la demande" },
-  { title: "Douane et Transit", price: "275 000 CFA", mode: "Présentiel, live ou à la demande" },
-  { title: "Transport et logistique", price: "175 000 CFA", mode: "Présentiel, live ou à la demande" },
-  { title: "Secrétariat de Direction", price: "165 000 CFA", mode: "Présentiel, live ou à la demande" },
-  { title: "Secrétariat de Bureautique", price: "165 000 CFA", mode: "Présentiel, live ou à la demande" },
-  { title: "Secrétariat Bilingue", price: "165 000 CFA", mode: "Présentiel, live ou à la demande" },
+  { title: "Développeur d’Application (AWS)", price: "250 000 CFA", mode: "Présentiel, live ou à la demande", jobs: ["Développeur cloud junior", "Assistant DevOps", "Support applicatif à distance"] },
+  { title: "Développeur Web", price: "250 000 CFA", mode: "Présentiel, live ou à la demande", jobs: ["Développeur front-end junior", "Intégrateur web", "Développeur freelance à distance"] },
+  { title: "Graphiste de production", price: "225 000 CFA", mode: "Présentiel, live ou à la demande", jobs: ["Graphiste digital", "Designer de contenu", "Graphiste freelance à distance"] },
+  { title: "Douane et Transit", price: "275 000 CFA", mode: "Présentiel, live ou à la demande", jobs: ["Agent de transit", "Assistant import-export", "Coordinateur documentaire à distance"] },
+  { title: "Transport et logistique", price: "175 000 CFA", mode: "Présentiel, live ou à la demande", jobs: ["Assistant logistique", "Coordinateur transport", "Agent de suivi des expéditions"] },
+  { title: "Secrétariat de Direction", price: "165 000 CFA", mode: "Présentiel, live ou à la demande", jobs: ["Assistant virtuel", "Office manager junior", "Assistant administratif à distance"] },
+  { title: "Secrétariat de Bureautique", price: "165 000 CFA", mode: "Présentiel, live ou à la demande", jobs: ["Opérateur de saisie", "Assistant administratif", "Gestionnaire de documents à distance"] },
+  { title: "Secrétariat Bilingue", price: "165 000 CFA", mode: "Présentiel, live ou à la demande", jobs: ["Assistant bilingue", "Customer support à distance", "Assistant de projet international"] },
 ] as const
+
+export const academyAccreditation = "Arrêté/Order N° 000325 / MINFOP/SG/DFOP/SDGSF/CSACD/CBAC"
 
 export const partners = [
   { name: "FreelanceConnect", href: "https://freelanceconnect.cm", text: "Préparation au freelance, au travail à distance et à la relation client en ligne." },
