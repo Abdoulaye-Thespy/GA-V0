@@ -1,12 +1,12 @@
 export const academyPrograms = [
-  { title: "Développeur d’Application (AWS)", price: "250 000 CFA", mode: "Présentiel, live ou à la demande", jobs: ["Développeur cloud junior", "Assistant DevOps", "Support applicatif à distance"] },
-  { title: "Développeur Web", price: "250 000 CFA", mode: "Présentiel, live ou à la demande", jobs: ["Développeur front-end junior", "Intégrateur web", "Développeur freelance à distance"] },
-  { title: "Graphiste de production", price: "225 000 CFA", mode: "Présentiel, live ou à la demande", jobs: ["Graphiste digital", "Designer de contenu", "Graphiste freelance à distance"] },
-  { title: "Douane et Transit", price: "275 000 CFA", mode: "Présentiel, live ou à la demande", jobs: ["Agent de transit", "Assistant import-export", "Coordinateur documentaire à distance"] },
-  { title: "Transport et logistique", price: "175 000 CFA", mode: "Présentiel, live ou à la demande", jobs: ["Assistant logistique", "Coordinateur transport", "Agent de suivi des expéditions"] },
-  { title: "Secrétariat de Direction", price: "165 000 CFA", mode: "Présentiel, live ou à la demande", jobs: ["Assistant virtuel", "Office manager junior", "Assistant administratif à distance"] },
-  { title: "Secrétariat de Bureautique", price: "165 000 CFA", mode: "Présentiel, live ou à la demande", jobs: ["Opérateur de saisie", "Assistant administratif", "Gestionnaire de documents à distance"] },
-  { title: "Secrétariat Bilingue", price: "165 000 CFA", mode: "Présentiel, live ou à la demande", jobs: ["Assistant bilingue", "Customer support à distance", "Assistant de projet international"] },
+  { title: "Développeur d’Application (AWS)", diploma: "DQP — Diplôme de Qualification professionnelle", price: "250 000 CFA", mode: "Présentiel, live ou à la demande", jobs: ["Développeur cloud junior", "Assistant DevOps", "Support applicatif à distance"] },
+  { title: "Développeur Web", diploma: "DQP — Diplôme de Qualification professionnelle", price: "250 000 CFA", mode: "Présentiel, live ou à la demande", jobs: ["Développeur front-end junior", "Intégrateur web", "Développeur freelance à distance"] },
+  { title: "Graphiste de production", diploma: "DQP — Diplôme de Qualification professionnelle", price: "225 000 CFA", mode: "Présentiel, live ou à la demande", jobs: ["Graphiste digital", "Designer de contenu", "Graphiste freelance à distance"] },
+  { title: "Douane et Transit", diploma: "CQP — Certificat de Qualification professionnelle", price: "275 000 CFA", mode: "Présentiel, live ou à la demande", jobs: ["Agent de transit", "Assistant import-export", "Coordinateur documentaire à distance"] },
+  { title: "Transport et logistique", diploma: "CQP — Certificat de Qualification professionnelle", price: "175 000 CFA", mode: "Présentiel, live ou à la demande", jobs: ["Assistant logistique", "Coordinateur transport", "Agent de suivi des expéditions"] },
+  { title: "Secrétariat de Direction", diploma: "DQP — Diplôme de Qualification professionnelle", price: "165 000 CFA", mode: "Présentiel, live ou à la demande", jobs: ["Assistant virtuel", "Office manager junior", "Assistant administratif à distance"] },
+  { title: "Secrétariat de Bureautique", diploma: "DQP — Diplôme de Qualification professionnelle", price: "165 000 CFA", mode: "Présentiel, live ou à la demande", jobs: ["Opérateur de saisie", "Assistant administratif", "Gestionnaire de documents à distance"] },
+  { title: "Secrétariat Bilingue", diploma: "DQP — Diplôme de Qualification professionnelle", price: "165 000 CFA", mode: "Présentiel, live ou à la demande", jobs: ["Assistant bilingue", "Customer support à distance", "Assistant de projet international"] },
 ] as const
 
 export const academyAccreditation = "Arrêté/Order N° 000325 / MINFOP/SG/DFOP/SDGSF/CSACD/CBAC"
