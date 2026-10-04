@@ -1,180 +1,47 @@
 "use server"
 
-export async function submitRegistration(formData: FormData) {
-  const studentName = formData.get("student_name") as string
-  const grade = formData.get("grade") as string
-  const parentName = formData.get("parent_name") as string
-  const email = formData.get("email") as string
-  const phone = formData.get("phone") as string
-  const message = (formData.get("message") as string) || ""
+import { Resend } from "resend"
+import { db, getRegistrationErrorMessage, isDatabaseConfigured, isSafeText, isValidEmail, registrations } from "@/lib/db"
+import { academyPrograms } from "@/lib/academy-data"
 
-  console.log("Server action called with data:", {
-    studentName,
-    grade,
-    parentName,
-    email,
-    phone,
-    message,
-  })
+const academyInbox = "njigouhrazak@iut-dhaka.edu"
 
-  // Validate required fields
-  if (!studentName || !grade || !parentName || !email || !phone) {
-    console.log("Validation failed - missing required fields")
-    return {
-      success: false,
-      message: "Please fill in all required fields.",
-    }
+export type RegistrationState = { success: boolean; message: string }
+
+export async function submitRegistration(_previousState: RegistrationState, formData: FormData): Promise<RegistrationState> {
+  const studentName = String(formData.get("student_name") ?? "").trim()
+  const parentName = String(formData.get("parent_name") ?? "").trim()
+  const email = String(formData.get("email") ?? "").trim().toLowerCase()
+  const phone = String(formData.get("phone") ?? "").trim()
+  const course = String(formData.get("course") ?? "").trim()
+  const message = String(formData.get("message") ?? "").trim()
+
+  if (!isSafeText(studentName, 120) || !isSafeText(parentName, 120) || !isValidEmail(email) || !isSafeText(phone, 40) || !academyPrograms.some((program) => program.title === course)) {
+    return { success: false, message: "Vérifiez les informations obligatoires et choisissez une formation proposée." }
   }
 
-  // Use environment variables from Vercel integration
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-
-  if (!supabaseUrl || !supabaseAnonKey) {
-    console.error("Missing Supabase environment variables")
-    return {
-      success: false,
-      message: "Database configuration error. Please contact support.",
-    }
+  if (!isDatabaseConfigured()) {
+    return { success: false, message: "La base de données n’est pas configurée. Veuillez contacter l’administration." }
   }
-
-  const apiKey = supabaseServiceKey || supabaseAnonKey
 
   try {
-    // First, let's check what columns exist in the table
-    console.log("Checking table schema...")
-    const schemaResponse = await fetch(`${supabaseUrl}/rest/v1/registrations?limit=0`, {
-      method: "GET",
-      headers: {
-        apikey: apiKey,
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-    })
+    const [registration] = await db.insert(registrations).values({ studentName, parentName, email, phone, course, message }).returning({ id: registrations.id })
+    const resend = new Resend(process.env.RESEND_API_KEY_2 || process.env.RESEND_API_KEY)
+    const from = process.env.RESEND_FROM_EMAIL_2 || process.env.RESEND_FROM_EMAIL
 
-    if (schemaResponse.ok) {
-      console.log("Table exists and is accessible")
-    } else {
-      const schemaError = await schemaResponse.text()
-      console.log("Schema check error:", schemaError)
-    }
+    if (!from) return { success: false, message: "Le service d’email n’est pas configuré. Veuillez contacter l’administration." }
 
-    // Try different possible column name combinations
-    const possibleDataFormats = [
-      // Format 1: snake_case (our current format)
-      {
-        student_name: studentName,
-        grade: grade,
-        parent_name: parentName,
-        email: email,
-        phone: phone,
-        message: message,
-      },
-      // Format 2: camelCase
-      {
-        studentName: studentName,
-        grade: grade,
-        parentName: parentName,
-        email: email,
-        phone: phone,
-        message: message,
-      },
-      // Format 3: Different field names
-      {
-        name: studentName,
-        grade: grade,
-        parent: parentName,
-        email: email,
-        phone: phone,
-        comments: message,
-      },
-      // Format 4: More common field names
-      {
-        student: studentName,
-        grade_level: grade,
-        guardian: parentName,
-        email_address: email,
-        phone_number: phone,
-        additional_info: message,
-      },
-    ]
+    const { error } = await resend.emails.send({
+      from,
+      to: [academyInbox],
+      replyTo: email,
+      subject: `Nouvelle demande d’admission — ${course}`,
+      html: `<h2>Nouvelle demande Global Academy</h2><p><strong>Apprenant :</strong> ${studentName}</p><p><strong>Responsable :</strong> ${parentName}</p><p><strong>Email :</strong> ${email}</p><p><strong>Téléphone :</strong> ${phone}</p><p><strong>Formation :</strong> ${course}</p><p><strong>Message :</strong> ${message || "Aucun message"}</p>`,
+    }, { idempotencyKey: `registration/${registration.id}` })
 
-    let lastError = null
-
-    // Try each format until one works
-    for (let i = 0; i < possibleDataFormats.length; i++) {
-      const registrationData = possibleDataFormats[i]
-      console.log(`Attempting format ${i + 1}:`, registrationData)
-
-      try {
-        const response = await fetch(`${supabaseUrl}/rest/v1/registrations`, {
-          method: "POST",
-          headers: {
-            apikey: apiKey,
-            Authorization: `Bearer ${apiKey}`,
-            "Content-Type": "application/json",
-            Prefer: "return=minimal",
-          },
-          body: JSON.stringify(registrationData),
-        })
-
-        console.log(`Format ${i + 1} response:`, {
-          status: response.status,
-          statusText: response.statusText,
-        })
-
-        if (response.ok) {
-          console.log(`Successfully submitted with format ${i + 1}`)
-          return {
-            success: true,
-            message: "Registration submitted successfully! We'll contact you within 24-48 hours.",
-          }
-        } else {
-          const errorText = await response.text()
-          console.log(`Format ${i + 1} failed:`, errorText)
-          lastError = errorText
-
-          // If it's not a column issue, break early
-          if (!errorText.includes("column") && !errorText.includes("schema")) {
-            break
-          }
-        }
-      } catch (formatError) {
-        console.log(`Format ${i + 1} network error:`, formatError)
-        lastError = formatError
-      }
-    }
-
-    // If all formats failed, return the last error
-    let errorMessage = "Failed to submit registration. Database schema mismatch."
-
-    if (lastError) {
-      try {
-        const errorData = typeof lastError === "string" ? JSON.parse(lastError) : lastError
-        if (errorData.message) {
-          if (errorData.message.includes("row-level security")) {
-            errorMessage = "Database access denied. Please contact support."
-          } else if (errorData.message.includes("relation") && errorData.message.includes("does not exist")) {
-            errorMessage = "The registrations table does not exist."
-          } else {
-            errorMessage = `Database error: ${errorData.message}`
-          }
-        }
-      } catch (parseError) {
-        console.log("Could not parse final error")
-      }
-    }
-
-    return {
-      success: false,
-      message: errorMessage,
-    }
+    if (error) console.error("[v0] Resend delivery failed", error)
+    return { success: true, message: "Votre demande a bien été enregistrée. Notre équipe vous contactera prochainement pour la suite de la validation." }
   } catch (error) {
-    console.error("Network/fetch error:", error)
-    return {
-      success: false,
-      message: `Network error: ${error instanceof Error ? error.message : "Unknown error"}`,
-    }
+    return { success: false, message: getRegistrationErrorMessage(error) }
   }
 }

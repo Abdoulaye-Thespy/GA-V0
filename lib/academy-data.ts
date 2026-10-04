@@ -23,6 +23,6 @@ export const aiFluencyLessons = [
   { id: "lesson-3", title: "L’IA avec responsabilité", description: "Confidentialité, vérification et décision humaine.", videoId: "M7lc1UVf-VE", quiz: [{ question: "Quelle pratique est recommandée ?", options: ["Partager des données sensibles", "Vérifier les résultats", "Automatiser chaque décision"], answer: 1 }] },
 ] as const
 
-export const academyContact = { address: "920 Avenue de l’indépendance, Bonapriso, Douala, Cameroun", email: "contact@globalacademy.cm", phone: "(+237) 620 224 288" }
+export const academyContact = { address: "920 Avenue de l’indépendance, Bonapriso, Douala, Cameroun BP 3861", email: "contact@globalacademy.freelanceconnect.cm", phone: "(+237) 693 526 747" }
 
 export const dummyLearner = { email: "apprenant.demo@globalacademy.cm", password: "AI-Fluency-2026" }
