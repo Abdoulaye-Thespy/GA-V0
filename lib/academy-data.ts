@@ -14,6 +14,15 @@ export const academyPrograms = [
   { title: "IA, données et cybersécurité au quotidien", diploma: "Short course — Protection, vérification et conformité", price: "35 000 CFA", mode: "En ligne, à la demande", jobs: ["Assistant conformité numérique", "Analyste qualité des données junior", "Support cybersécurité sensibilisation"] },
 ] as const
 
+export const freeShortCourses = [
+  { title: "Le 4D Framework — version française", format: "Short course", price: "Gratuit", description: "Une méthode simple pour cadrer une demande IA : définir, décrire, diriger et décider.", tags: ["short-course", "certifiante", "lab"], jobs: ["Assistant IA", "Créateur de contenu junior"] },
+  { title: "Les capacités et limites de l’intelligence artificielle", format: "Short course", price: "Gratuit", description: "Comprendre ce que l’IA sait faire, ce qu’elle ne sait pas faire et quand garder une validation humaine.", tags: ["short-course", "certifiante"], jobs: ["Référent IA", "Assistant qualité numérique"] },
+  { title: "Premiers prompts pour apprendre avec l’IA", format: "Short course", price: "Gratuit", description: "Des consignes accessibles pour réviser, rechercher, synthétiser et progresser avec responsabilité.", tags: ["short-course", "certifiante", "lab"], jobs: ["Assistant de recherche", "Tuteur en ligne"] },
+  { title: "Lab : créer son premier workflow IA", format: "Lab à reprendre", price: "Gratuit", description: "Un atelier pratique reproductible pour construire, tester et améliorer un workflow IA du quotidien.", tags: ["lab", "short-course"], jobs: ["Assistant automatisation", "Opérateur digital"] },
+  { title: "IA pour les entreprises : premier cas d’usage", format: "Short course entreprise", price: "Gratuit", description: "Identifier un cas d’usage concret, mesurer sa valeur et préparer une adoption progressive en équipe.", tags: ["entreprise", "short-course", "certifiante"], jobs: ["Référent IA en entreprise", "Chef de projet digital"] },
+  { title: "Réussir une veille avec l’IA", format: "Short course", price: "Gratuit", description: "Apprendre à questionner, comparer et vérifier les informations produites ou résumées par l’IA.", tags: ["short-course", "certifiante"], jobs: ["Analyste veille junior", "Assistant documentation"] },
+] as const
+
 export const academyAccreditation = "Arrêté/Order N° 000325 / MINFOP/SG/DFOP/SDGSF/CSACD/CBAC"
 
 export const partners = [
