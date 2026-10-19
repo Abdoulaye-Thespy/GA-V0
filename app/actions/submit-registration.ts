@@ -2,7 +2,7 @@
 
 import { Resend } from "resend"
 import { db, getRegistrationErrorMessage, isDatabaseConfigured, isSafeText, isValidEmail, registrations } from "@/lib/db"
-import { academyPrograms } from "@/lib/academy-data"
+import { academyPrograms, freeShortCourses } from "@/lib/academy-data"
 
 const academyInbox = "njigouhrazak@iut-dhaka.edu"
 
@@ -16,7 +16,7 @@ export async function submitRegistration(_previousState: RegistrationState, form
   const course = String(formData.get("course") ?? "").trim()
   const message = String(formData.get("message") ?? "").trim()
 
-  if (!isSafeText(studentName, 120) || !isSafeText(parentName, 120) || !isValidEmail(email) || !isSafeText(phone, 40) || !academyPrograms.some((program) => program.title === course)) {
+  if (!isSafeText(studentName, 120) || !isSafeText(parentName, 120) || !isValidEmail(email) || !isSafeText(phone, 40) || ![...academyPrograms, ...freeShortCourses].some((program) => program.title === course)) {
     return { success: false, message: "Vérifiez les informations obligatoires et choisissez une formation proposée." }
   }
 
