@@ -18,7 +18,7 @@ const filters = [
 
 export default function ProgramsPage() {
   const [activeFilter, setActiveFilter] = useState<(typeof filters)[number]["id"]>("all")
-  const featuredTitles = ["Développeur d’Application (AWS)", "Développeur Web", "AI Fluency pour étudiants", "AI Fluency pour enseignants", "AI-Driven Development pour développeurs juniors"]
+  const featuredTitles = ["Développeur d’Application (AWS)", "Développeur Web", "Graphiste de production", "Douane et Transit", "AI Fluency pour étudiants", "AI Fluency pour enseignants", "AI-Driven Development pour développeurs juniors"]
   const showProfessional = activeFilter === "all"
   const professionalPrograms = academyPrograms.filter((program) => featuredTitles.includes(program.title))
   const allPrograms = academyPrograms
