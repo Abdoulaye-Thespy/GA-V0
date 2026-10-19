@@ -1,8 +1,11 @@
 import type { Metadata } from "next"
+import { Plus_Jakarta_Sans } from "next/font/google"
 import "./globals.css"
 import ChatbotWidget from "@/components/chatbot-widget"
 
 // Métadonnées SEO pour le site
+const plusJakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-plus-jakarta", display: "swap" })
+
 export const metadata: Metadata = {
   title: "Global Academy | École vocationnelle au Cameroun",
   description:
@@ -23,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="fr" className="bg-background">
+    <html lang="fr" className={`${plusJakarta.variable} bg-background`}>
       <body>
         {children}
         <ChatbotWidget />
