@@ -44,14 +44,18 @@ export async function submitRegistration(_previousState: RegistrationState, form
 
   try {
     const [registration] = await db.insert(registrations).values({ studentName, parentName, email, phone, course, message }).returning({ id: registrations.id })
-    const resendApiKey = process.env.RESEND_API_KEY_2?.startsWith("re_")
-      ? process.env.RESEND_API_KEY_2
-      : process.env.RESEND_API_KEY
+    const resendApiKey = [process.env.RESEND_API_KEY_2, process.env.RESEND_API_KEY]
+      .find((value) => value?.startsWith("re_") && !value.includes("process.env"))
+
+    if (!resendApiKey) {
+      console.error("[v0] Registration saved but Resend API key is not configured", { registrationId: registration.id })
+      return { success: false, message: "Votre demande a été enregistrée, mais l’envoi de la confirmation est momentanément indisponible. Notre équipe va vous recontacter." }
+    }
+
     const resend = new Resend(resendApiKey)
-    const configuredFrom = process.env.RESEND_FROM_EMAIL_2?.includes("@") && !process.env.RESEND_FROM_EMAIL_2.includes("process.env")
-      ? process.env.RESEND_FROM_EMAIL_2
-      : defaultFrom
-    const from = configuredFrom
+    const configuredFrom = [process.env.RESEND_FROM_EMAIL_2, process.env.RESEND_FROM_EMAIL]
+      .find((value) => value?.includes("@") && !value.includes("process.env"))
+    const from = configuredFrom || defaultFrom
 
     const { error: adminError } = await resend.emails.send({
       from,
@@ -70,7 +74,13 @@ export async function submitRegistration(_previousState: RegistrationState, form
     }, { idempotencyKey: `registration-confirmation/${registration.id}` })
 
     if (adminError || applicantError) {
-      console.error("[v0] Registration email delivery failed", { adminError, applicantError, registrationId: registration.id })
+      console.error("[v0] Registration email delivery failed", {
+        adminError: adminError?.message,
+        applicantError: applicantError?.message,
+        registrationId: registration.id,
+        from,
+      })
+      return { success: false, message: "Votre demande a bien été enregistrée, mais l’email de confirmation n’a pas pu être envoyé. Notre équipe va vous recontacter prochainement." }
     }
 
     return { success: true, message: "Votre demande a bien été enregistrée. Un email de confirmation vous a été envoyé et notre équipe vous contactera prochainement pour la suite de la validation." }
