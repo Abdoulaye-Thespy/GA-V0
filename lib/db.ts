@@ -1,11 +1,14 @@
 import { drizzle } from "drizzle-orm/node-postgres"
-import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core"
+import { boolean, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core"
 import { Pool } from "pg"
 
 export const registrations = pgTable("registrations", {
   id: uuid("id").defaultRandom().primaryKey(),
   studentName: text("student_name").notNull(),
-  parentName: text("parent_name").notNull(),
+  referenceName: text("reference_name").notNull().default(""),
+  lastDiploma: text("last_diploma").notNull().default(""),
+  whatsappPhone: text("whatsapp_phone").notNull().default(""),
+  whatsappSameAsPhone: boolean("whatsapp_same_as_phone").notNull().default(false),
   email: text("email").notNull(),
   phone: text("phone").notNull(),
   course: text("course").notNull(),
