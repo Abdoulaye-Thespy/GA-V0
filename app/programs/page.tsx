@@ -21,7 +21,7 @@ const filters = [
 export default function ProgramsPage() {
   const [activeFilter, setActiveFilter] = useState<(typeof filters)[number]["id"]>("featured")
   const featuredTitles = ["Développeur d’Application (AWS)", "Développeur Web", "Graphiste de production", "AI Fluency pour étudiants", "AI Fluency pour enseignants", "AI-Driven Development pour développeurs juniors"]
-  const featuredFreeTitles = ["Le 4D Framework — version française", "Les capacités et limites de l’intelligence artificielle"]
+  const featuredFreeTitles = ["Le 4D Framework — version française", "Les capacités et limites de l’intelligence artificielle", "Lab : faire tourner un petit LLM en local"]
   const isFreeProgram = (program: (typeof academyPrograms)[number]) => program.price === "Gratuit"
   const showProfessional = activeFilter !== "free" && activeFilter !== "short-course" && activeFilter !== "lab"
   const professionalPrograms = academyPrograms.filter((program) => {
