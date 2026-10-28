@@ -239,11 +239,11 @@ export default function ChatbotWidget() {
   }
 
   return (
-    <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3 sm:bottom-6 sm:right-6">
+    <div className="fixed inset-x-2 bottom-2 z-50 flex flex-col items-end gap-2 sm:inset-x-auto sm:bottom-6 sm:right-6 sm:gap-3">
       {open && (
         <section
           aria-label="Assistant Global Academy"
-          className="flex h-[min(620px,calc(100vh-7rem))] w-[min(380px,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-2xl"
+          className="flex h-[min(620px,calc(100dvh-5.5rem))] w-full max-w-[420px] flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-2xl sm:h-[min(620px,calc(100vh-7rem))] sm:w-[min(420px,calc(100vw-3rem))]"
         >
           <header className="flex items-center justify-between bg-forest px-5 py-4 text-white">
             <div className="flex items-center gap-3">
@@ -333,9 +333,9 @@ export default function ChatbotWidget() {
                 rows={1}
                 className="max-h-24 min-h-11 flex-1 resize-none rounded-xl border border-input bg-background px-3 py-2.5 text-sm outline-none focus:border-forest focus:ring-2 focus:ring-forest/20"
                 onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
+                  if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing && e.keyCode !== 229) {
                     e.preventDefault()
-                    handleSubmit(e as any)
+                    e.currentTarget.form?.requestSubmit()
                   }
                 }}
               />
@@ -361,7 +361,7 @@ export default function ChatbotWidget() {
         onClick={toggleWidget}
         aria-expanded={open}
         aria-label={open ? "Fermer le chatbot" : "Ouvrir le chatbot"}
-        className="group flex items-center gap-3 rounded-full bg-forest px-4 py-3 text-white shadow-lg transition hover:bg-forest-light"
+        className="group flex items-center gap-2 rounded-full bg-forest px-3 py-2.5 text-white shadow-lg transition hover:bg-forest-light sm:gap-3 sm:px-4 sm:py-3"
       >
         <span className="hidden text-sm font-bold sm:inline">Une question ?</span>
         <span className="rounded-full bg-gold p-2 text-forest">
