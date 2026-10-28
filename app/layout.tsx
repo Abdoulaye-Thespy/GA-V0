@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import { Plus_Jakarta_Sans } from "next/font/google"
 import "./globals.css"
-import ChatbotWidget from "@/components/chatbot-widget"
 
 // Métadonnées SEO pour le site
 const plusJakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-plus-jakarta", display: "swap" })
@@ -29,7 +28,6 @@ export default function RootLayout({
     <html lang="fr" className={`${plusJakarta.variable} bg-background`}>
       <body>
         {children}
-        <ChatbotWidget />
       </body>
     </html>
   )
