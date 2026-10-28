@@ -23,6 +23,28 @@ function isSmallTalk(message: string): boolean {
   return SMALL_TALK_REGEX.test(message.trim())
 }
 
+function localAssistantReply(message: string): string {
+  const normalized = message.toLowerCase()
+
+  if (isSmallTalk(message)) {
+    return "Bonjour, bienvenue à Global Academy. Je peux vous renseigner sur nos formations, les admissions, les short courses et les labs gratuits."
+  }
+  if (normalized.includes("formation") || normalized.includes("cours") || normalized.includes("programme")) {
+    return "Global Academy propose des parcours en IA, coding, cloud, graphisme, bureautique, comptabilité et secrétariat, ainsi que des short courses et labs accessibles selon leur format. Consultez la page Formations pour découvrir le catalogue."
+  }
+  if (normalized.includes("inscri") || normalized.includes("admission")) {
+    return "Pour vous inscrire, ouvrez la page Admissions ou utilisez le formulaire d’inscription. Votre demande est enregistrée dans Neon et un email de confirmation vous est envoyé après réception."
+  }
+  if (normalized.includes("lab") || normalized.includes("ollama") || normalized.includes("docker")) {
+    return "Notre lab Docker et Ollama explique comment lancer un petit modèle de langage en local, avec une procédure CPU et GPU. Il est disponible gratuitement dans le blog, sans compte."
+  }
+  if (normalized.includes("contact") || normalized.includes("téléphone") || normalized.includes("email")) {
+    return "Vous pouvez contacter Global Academy à contact@globalacademy.freelanceconnect.cm ou au +237 693 526 747."
+  }
+
+  return "Je suis actuellement en mode découverte et je peux déjà vous orienter vers les formations, les admissions, les short courses, les labs et les informations de contact de Global Academy."
+}
+
 /* ------------------------------------------------------------------ */
 /*  Sound engine (Web Audio API – no asset files required)            */
 /* ------------------------------------------------------------------ */
@@ -183,29 +205,24 @@ export default function ChatbotWidget() {
 
     try {
       const baseUrl = process.env.NEXT_PUBLIC_CHAT_API_URL?.replace(/\/$/, "")
-      if (!baseUrl) throw new Error("L'API du chatbot n'est pas configurée.")
+      let reply: string
 
-      // ------------------------------------------------------------------
-      // Routing: small talk → /chat/prompt-only (no RAG, fast)
-      //          everything else → /chat/safe (RAG + system prompt)
-      // ------------------------------------------------------------------
-      const isSimple = isSmallTalk(content)
-      const endpoint = isSimple ? "/chat/prompt-only" : "/chat/safe"
+      if (!baseUrl) {
+        await new Promise((resolve) => window.setTimeout(resolve, 450))
+        reply = localAssistantReply(content)
+      } else {
+        const isSimple = isSmallTalk(content)
+        const endpoint = isSimple ? "/chat/prompt-only" : "/chat/safe"
+        const response = await fetch(`${baseUrl}${endpoint}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ messages: nextMessages }),
+        })
 
-      const response = await fetch(`${baseUrl}${endpoint}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: nextMessages,
-        }),
-      })
-
-      if (!response.ok) throw new Error("Le service est momentanément indisponible.")
-
-      const payload = await response.json()
-      const reply = readResponse(payload)
-
-      if (!reply) throw new Error("La réponse du service est invalide.")
+        if (!response.ok) throw new Error("Le service est momentanément indisponible.")
+        const payload = await response.json()
+        reply = readResponse(payload) ?? "La réponse du service est invalide."
+      }
 
       setMessages((current) => [...current, { role: "assistant", content: reply }])
       playReceivedSound()
@@ -237,7 +254,7 @@ export default function ChatbotWidget() {
                 <p className="font-serif text-lg font-bold">Assistant Global Academy</p>
                 <p className="flex items-center gap-1 text-xs text-white/70">
                   <span className="h-1.5 w-1.5 rounded-full bg-gold animate-pulse" />
-                  {loading ? "En train de répondre..." : "En ligne"}
+                  {loading ? "En train de répondre..." : process.env.NEXT_PUBLIC_CHAT_API_URL ? "En ligne" : "Mode découverte"}
                 </p>
               </div>
             </div>
