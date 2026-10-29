@@ -3,12 +3,13 @@ import { NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { certificates, createCertificateToken } from "@/lib/certificates"
 import { academyAccreditation } from "@/lib/academy-data"
+import { sanitizeCertificateName } from "@/lib/certificate-validation"
 
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const name = typeof body.name === "string" ? body.name.trim().replace(/[<>]/g, "") : ""
-    if (name.length < 2 || name.length > 120) return NextResponse.json({ error: "Indiquez un nom complet valide." }, { status: 400 })
+    const name = sanitizeCertificateName(body.name)
+    if (!name) return NextResponse.json({ error: "Indiquez un nom complet valide." }, { status: 400 })
     const now = new Date()
     const token = createCertificateToken()
     const certificateNumber = `GA-LLM-${now.getUTCFullYear()}-${randomUUID().slice(0, 8).toUpperCase()}`
