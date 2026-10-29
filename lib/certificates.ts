@@ -4,6 +4,8 @@ import { eq } from "drizzle-orm"
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib"
 import QRCode from "qrcode"
 import { db } from "@/lib/db"
+import { academyAccreditation } from "@/lib/academy-data"
+import { globalAcademyLogo } from "@/components/site-brand"
 import { pgTable, text, timestamp, uuid, integer } from "drizzle-orm/pg-core"
 
 export const certificates = pgTable("certificates", {
@@ -27,6 +29,7 @@ export async function buildCertificatePdf(certificate: Certificate) {
   const page = pdf.addPage([842, 595])
   const regular = await pdf.embedFont(StandardFonts.Helvetica)
   const bold = await pdf.embedFont(StandardFonts.HelveticaBold)
+  const nameFont = await pdf.embedFont(StandardFonts.TimesRomanBoldItalic)
   const forest = rgb(0.07, 0.24, 0.22)
   const gold = rgb(0.78, 0.58, 0.18)
   const cream = rgb(0.97, 0.95, 0.89)
@@ -34,15 +37,20 @@ export async function buildCertificatePdf(certificate: Certificate) {
   page.drawRectangle({ x: 0, y: 0, width: 842, height: 595, color: cream })
   page.drawRectangle({ x: 22, y: 22, width: 798, height: 551, borderColor: forest, borderWidth: 2 })
   page.drawRectangle({ x: 34, y: 34, width: 774, height: 527, borderColor: gold, borderWidth: 1 })
-  page.drawText("GLOBAL ACADEMY", { x: 280, y: 492, size: 17, font: bold, color: forest })
+  const logoResponse = await fetch(globalAcademyLogo)
+  if (logoResponse.ok) {
+    const logoImage = await pdf.embedJpg(await logoResponse.arrayBuffer())
+    page.drawImage(logoImage, { x: 369, y: 492, width: 104, height: 42 })
+  }
   page.drawText("CERTIFICAT DE RÉUSSITE", { x: 242, y: 440, size: 26, font: bold, color: forest })
   page.drawText("décerne ce certificat à", { x: 347, y: 397, size: 13, font: regular, color: forest })
-  page.drawText(certificate.recipientName, { x: 421 - bold.widthOfTextAtSize(certificate.recipientName, 25) / 2, y: 348, size: 25, font: bold, color: gold })
+  page.drawText(certificate.recipientName, { x: 421 - nameFont.widthOfTextAtSize(certificate.recipientName, 27) / 2, y: 348, size: 27, font: nameFont, color: gold })
   page.drawText(`pour avoir complété ${certificate.courseTitle}`, { x: 421 - regular.widthOfTextAtSize(`pour avoir complété ${certificate.courseTitle}`, 13) / 2, y: 309, size: 13, font: regular, color: forest })
   page.drawText(`N° ${certificate.certificateNumber}`, { x: 70, y: 85, size: 10, font: regular, color: forest })
   page.drawText(`Délivré le ${new Intl.DateTimeFormat("fr-FR").format(certificate.issuedAt)}`, { x: 70, y: 68, size: 10, font: regular, color: forest })
   page.drawText(certificate.issuerName, { x: 640, y: 85, size: 11, font: bold, color: forest })
   page.drawText(certificate.issuerTitle, { x: 640, y: 68, size: 9, font: regular, color: forest })
+  page.drawText(certificate.accreditationText || academyAccreditation, { x: 70, y: 48, size: 7.5, font: regular, color: forest })
   const qr = await QRCode.toDataURL(certificateUrl(certificate.verificationToken), { margin: 1, width: 100 })
   const qrImage = await pdf.embedPng(qr)
   page.drawImage(qrImage, { x: 700, y: 405, width: 80, height: 80 })
