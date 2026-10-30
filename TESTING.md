@@ -5,10 +5,10 @@
 Le pipeline utilise des gates progressives :
 
 1. **Pré-commit/local** : formatage, lint, TypeScript et tests unitaires.
-2. **Pull request** : installation reproductible avec le lockfile, lint, typecheck, tests, audit npm, build et Dependency Review.
-3. **SAST** : CodeQL analyse JavaScript/TypeScript sur les PR, la branche principale et chaque semaine.
-4. **Preview Vercel** : validation manuelle de l’UI sur la Preview générée par Vercel.
-5. **Production** : déploiement seulement après les checks GitHub/Vercel requis.
+2. **Vercel Preview** : chaque Pull Request ou branche de travail génère une Preview automatiquement.
+3. **Validation Preview** : smoke tests, responsive checks et validation manuelle de l’UI sur la Preview Vercel.
+4. **Production** : déploiement automatique depuis `master` après validation de la Preview.
+5. **SAST/Dependency Review** : à ajouter plus tard dans GitHub Actions lorsque le dépôt autorisera les permissions `workflows`.
 
 ## Commandes locales et Codex
 
@@ -39,7 +39,9 @@ pnpm dev
 
 ## Règles de merge
 
-- Aucun merge si lint, typecheck, tests, audit ou build échoue.
+- Aucun merge vers `master` si lint, typecheck, tests, audit ou build échoue localement.
+- La Preview Vercel doit être consultée avant le merge.
+- La Production reste pilotée exclusivement par le déploiement automatique Vercel depuis `master`.
 - Toute nouvelle route API doit avoir des cas nominal, validation, accès refusé, absence de ressource et erreur interne.
 - Toute modification de données doit avoir un test de migration et un test de régression.
 - Les secrets restent dans Vercel/GitHub Actions secrets, jamais dans `.env` commité.
