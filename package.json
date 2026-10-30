@@ -10,6 +10,8 @@
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "audit": "pnpm audit --audit-level=high",
+    "quality": "bash scripts/quality-gate.sh full",
+    "quality:quick": "bash scripts/quality-gate.sh quick",
     "start": "next start"
   },
   "dependencies": {
