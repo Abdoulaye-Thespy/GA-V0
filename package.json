@@ -7,6 +7,9 @@
     "dev": "next dev",
     "lint": "eslint .",
     "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "audit": "pnpm audit --audit-level=high",
     "start": "next start"
   },
   "dependencies": {
@@ -53,7 +56,7 @@
     "input-otp": "latest",
     "lucide-react": "^0.454.0",
     "nanoid": "latest",
-    "next": "15.5.18",
+    "next": "15.5.28",
     "next-themes": "latest",
     "pdf-lib": "^1.17.1",
     "pg": "^8.23.1",
@@ -71,16 +74,27 @@
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "latest",
-    "zod": "3.25.76"
+    "zod": "4.6.7"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.7",
+    "@eslint/js": "^9.39.5",
     "@types/node": "^24",
     "@types/pg": "^8.23.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "postcss": "^8.5",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "15.5.28",
+    "postcss": "^8.5.32",
     "tailwindcss": "^3.4.17",
     "typescript": "^5",
     "vitest": "^5.0.5"
+  },
+  "pnpm": {
+    "overrides": {
+      "postcss": "8.5.32",
+      "source-map-js": "1.2.2",
+      "zod": "4.6.7"
+    }
   }
 }

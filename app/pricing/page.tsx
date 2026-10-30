@@ -113,7 +113,7 @@ export default function PricingPage() {
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Tuition & Fees</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-            Invest in your child's future with our comprehensive educational programs. We offer competitive pricing with
+            Invest in your child&apos;s future with our comprehensive educational programs. We offer competitive pricing with
             exceptional value for quality education.
           </p>
 
