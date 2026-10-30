@@ -5,7 +5,7 @@ import { PDFDocument, StandardFonts, rgb } from "pdf-lib"
 import QRCode from "qrcode"
 import { db } from "@/lib/db"
 import { academyAccreditation } from "@/lib/academy-data"
-import { globalAcademyLogo } from "@/components/site-brand"
+import { globalAcademyLogo, globalAcademySignature } from "@/components/site-brand"
 import { pgTable, text, timestamp, uuid, integer } from "drizzle-orm/pg-core"
 
 export const certificates = pgTable("certificates", {
@@ -49,7 +49,12 @@ export async function buildCertificatePdf(certificate: Certificate) {
   page.drawText(`N° ${certificate.certificateNumber}`, { x: 70, y: 85, size: 10, font: regular, color: forest })
   page.drawText(`Délivré le ${new Intl.DateTimeFormat("fr-FR").format(certificate.issuedAt)}`, { x: 70, y: 68, size: 10, font: regular, color: forest })
   page.drawText(certificate.issuerName, { x: 640, y: 85, size: 11, font: bold, color: forest })
-  page.drawText(certificate.issuerTitle, { x: 640, y: 68, size: 9, font: regular, color: forest })
+  const signatureResponse = await fetch(globalAcademySignature)
+  if (signatureResponse.ok) {
+    const signatureImage = await pdf.embedPng(await signatureResponse.arrayBuffer())
+    page.drawImage(signatureImage, { x: 634, y: 39, width: 145, height: 48 })
+  }
+  page.drawText(certificate.issuerTitle, { x: 640, y: 31, size: 8, font: regular, color: forest })
   page.drawText(certificate.accreditationText || academyAccreditation, { x: 70, y: 48, size: 7.5, font: regular, color: forest })
   const qr = await QRCode.toDataURL(certificateUrl(certificate.verificationToken), { margin: 1, width: 100 })
   const qrImage = await pdf.embedPng(qr)
