@@ -6,7 +6,7 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "eslint .",
-    "test": "vitest run tests/certificates.test.ts && node --test tests/course-utils.test.mjs",
+    "test": "vitest run tests/certificates.test.ts tests/account-access.test.ts && node --test tests/course-utils.test.mjs",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "audit": "pnpm audit --audit-level=high",
