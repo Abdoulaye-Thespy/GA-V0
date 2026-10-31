@@ -1,6 +1,14 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { getCertificateByToken } from "@/lib/certificates"
+
+export async function generateMetadata({ params }: { params: Promise<{ token: string }> }): Promise<Metadata> {
+  const { token } = await params
+  const certificate = await getCertificateByToken(token)
+  if (!certificate) return { title: "Certificat introuvable | Global Academy", robots: { index: false, follow: false } }
+  return { title: `${certificate.courseTitle} — ${certificate.recipientName} | Global Academy`, description: `Vérification du certificat ${certificate.certificateNumber} délivré par Global Academy.`, alternates: { canonical: `/verify/${token}` }, openGraph: { title: `Certificat de ${certificate.recipientName}`, description: `${certificate.courseTitle} · ${certificate.certificateNumber}`, type: "article" } }
+}
 
 export default async function VerifyCertificate({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params

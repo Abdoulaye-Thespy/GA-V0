@@ -1,9 +1,17 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { getCertificateByToken } from "@/lib/certificates"
 import { CertificateActions } from "@/components/certificate-actions"
 import { globalAcademyLogo, globalAcademySignature } from "@/components/site-brand"
 import { academyAccreditation } from "@/lib/academy-data"
+
+export async function generateMetadata({ params }: { params: Promise<{ token: string }> }): Promise<Metadata> {
+  const { token } = await params
+  const certificate = await getCertificateByToken(token)
+  if (!certificate) return { title: "Certificat introuvable | Global Academy", robots: { index: false, follow: false } }
+  return { title: `Certificat de ${certificate.recipientName} | Global Academy`, description: `${certificate.courseTitle} — certificat ${certificate.certificateNumber}.`, alternates: { canonical: `/certificates/${token}` }, openGraph: { title: `Certificat de ${certificate.recipientName}`, description: certificate.courseTitle, type: "article" } }
+}
 
 export default async function CertificatePage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
